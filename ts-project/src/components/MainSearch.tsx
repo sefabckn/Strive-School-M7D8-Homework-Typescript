@@ -1,32 +1,33 @@
 
 import { Container, Row, Col, Form } from 'react-bootstrap';
 
-import { useState } from 'react';
-import { SearchedSongs } from '../types/searchedSong'
+import { FormEvent, useState, ChangeEvent, useEffect } from 'react';
+import { Track } from '../types/searchedSong'
 import SingleSong from './SingleSong';
 
 const MainSearch = () => {
 
     const [query, setQuery] = useState('')
-    const [songs, setSongs] = useState<SearchedSongs[]>([])
+    const [songs, setSongs] = useState<Track[]>([])
 
     const baseURL = "https://striveschool-api.herokuapp.com/api/deezer/search?q="
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e:FormEvent) => {
         e.preventDefault();
         try {
             let response = await fetch(baseURL + query);
             if (response.ok) {
                 let data = await response.json()
-                console.log(data)
-                setSongs(data)
+                /* console.log(data) */
+                setSongs(data.data)
+                console.log(songs)
             }
         } catch (error) {
             console.log(error)
         }
     }
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value)
     }
 
@@ -38,7 +39,7 @@ const MainSearch = () => {
                         <h1>Music Search</h1>
                     </Col>
                     <Col xs={10} className="mx-auto">
-                        <Form onSubmit={handleSubmit}>
+                        <Form onSubmit={handleSubmit} style={{marginBottom:'1rem'}}>
                             <Form.Control
                                 type="search"
                                 value={query}
@@ -51,9 +52,11 @@ const MainSearch = () => {
                 <Row>
                     {
                         songs.map((song)=>{
-                            <Col>
-                                <SingleSong  song={song} key={song.id}/>
-                            </Col>
+                            return(
+                                <Col>
+                                    <SingleSong song={song} key={song.id}/>
+                                </Col>
+                            )
                         })
                     }
                 </Row>

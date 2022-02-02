@@ -1,14 +1,13 @@
 
-import {Card, Button} from 'react-bootstrap'
-import {SearchedSongs} from '../types/searchedSong'
+import { Card, Button } from 'react-bootstrap'
+import { Track } from '../types/searchedSong'
 
 interface SingleSongProps {
-    song: SearchedSongs
+    song: Track
 }
 
-const SingleSong = ({song}: SingleSongProps) => {
+const SingleSong = ({ song }: SingleSongProps) => {
     return (
-
         <>
             <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={song.artist.picture_medium} />
